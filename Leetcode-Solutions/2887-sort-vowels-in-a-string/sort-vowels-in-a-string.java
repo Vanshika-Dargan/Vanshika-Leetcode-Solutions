@@ -1,31 +1,27 @@
 class Solution {
     public String sortVowels(String s) {
-        int n=s.length();
-        List<Character> vowels=new ArrayList<>();
-        for(int i=0;i<n;i++){
+        int count[]=new int[256];
+        for(int i=0;i<s.length();i++){
             if(isVowel(s.charAt(i)))
-            {
-            vowels.add(s.charAt(i));
-            }
+            count[s.charAt(i)]++;
         }
-        Collections.sort(vowels,(a,b)->a-b);
         StringBuilder sb=new StringBuilder();
         int j=0;
-        for(int i=0;i<n;i++){
-        if(isVowel(s.charAt(i))){
-            sb.append(vowels.get(j++));
-        }
-        else{
-            sb.append(s.charAt(i));
-        }
+        String sorted="AEIOUaeiou";
+        for(int i=0;i<s.length();i++){
+            if(isVowel(s.charAt(i))){
+                while(count[sorted.charAt(j)]==0) j++;
+            sb.append(sorted.charAt(j));
+            count[sorted.charAt(j)]--;
+            }
+            else{
+                sb.append(s.charAt(i));
+            }
         }
         return sb.toString();
     }
-       boolean isVowel(char ch){
-        if(ch=='a' || ch=='e' || ch=='i' || ch=='o' || ch=='u'
-        || ch=='A' || ch=='E' || ch=='I'|| ch=='O' || ch=='U'
-        )
-        return true;
-        return false;
+     boolean isVowel(Character c) {
+        return c == 'a' || c == 'e' || c == 'o'|| c == 'u'|| c == 'i'
+                || c == 'A' || c == 'E' || c == 'O'|| c == 'U'|| c == 'I';
     }
 }
