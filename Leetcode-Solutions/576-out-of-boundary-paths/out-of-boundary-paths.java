@@ -1,27 +1,25 @@
 class Solution {
-    int dir[][]={{0,1},{0,-1},{1,0},{-1,0}};
-    int mod=(int)1e9+7;
-    public int findPaths(int m, int n, int maxMove, int startRow, int startColumn) {
-        int dp[][][]=new int[2][51][51];
-        for(int curr=1;curr<=maxMove;curr++){
-            for(int i=0;i<m;i++){
-                for(int j=0;j<n;j++){
-                    int ans=0;
-                    for(int d[]:dir){
-                    
-              int nextRow=d[0]+i;
-              int nextColumn=d[1]+j;
-              if((nextRow==-1 ||  nextRow==m ||   nextColumn==-1 ||  nextColumn==n))
-              ans++;
-              else
-              ans=(ans+dp[(curr-1)&1][nextRow][nextColumn])%mod;
-    }
-    dp[curr&1][i][j]=ans;
-                }
-            }
+  public int findPaths(int m, int n, int N, int x, int y) {
+    int M = 1000000000 + 7;
+    int dp[][] = new int[m][n];
+    dp[x][y] = 1;
+    int count = 0;
+    for (int moves = 1; moves <= N; moves++) {
+      int[][] temp = new int[m][n];
+      for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+          if (i == m - 1) count = (count + dp[i][j]) % M;
+          if (j == n - 1) count = (count + dp[i][j]) % M;
+          if (i == 0) count = (count + dp[i][j]) % M;
+          if (j == 0) count = (count + dp[i][j]) % M;
+          temp[i][j] = (
+              ((i > 0 ? dp[i - 1][j] : 0) + (i < m - 1 ? dp[i + 1][j] : 0)) % M +
+              ((j > 0 ? dp[i][j - 1] : 0) + (j < n - 1 ? dp[i][j + 1] : 0)) % M
+          ) % M;
         }
-        return dp[maxMove&1][startRow][startColumn];
-        
+      }
+      dp = temp;
     }
-
+    return count;
+  }
 }
