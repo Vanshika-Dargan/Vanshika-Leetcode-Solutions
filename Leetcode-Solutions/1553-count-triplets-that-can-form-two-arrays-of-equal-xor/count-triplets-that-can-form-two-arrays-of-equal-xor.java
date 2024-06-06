@@ -1,25 +1,14 @@
 class Solution {
     public int countTriplets(int[] arr) {
-
-       int i=0;
-       int count=0;
-       int n=arr.length;
-        int a=arr[i];
-        while(i<n){
-        a=arr[i];
-        int j=i+1;
-       while(j<n){
-         int b=arr[j];
-        if(a==b) count++;
-        for(int k=j+1;k<n;k++){
-            b=b^arr[k];
-           if(a==b) count++;
+        
+        int count=0;
+        for(int i=0;i<arr.length;i++){
+            int xor=arr[i];
+            for(int k=i+1;k<arr.length;k++){
+                xor^=arr[k];
+                if(xor==0) count+=k-i;
+            }
         }
-        a=a^arr[j];
-        j++;
-       }
-       i++;
-        }
-       return count;
+        return count;
     }
 }
