@@ -1,19 +1,32 @@
 class Solution {
-    public long minimumTotalDistance(List<Integer> robot, int[][] factory) {
+    public long minimumTotalDistance(List<Integer> robots, int[][] factorys) {
         
-        Collections.sort(robot);
+        Collections.sort(robots);
         List<Integer> factories = new ArrayList<>();
-        for(int[] f: factory){
+        for(int[] f: factorys){
             for(int i=0;i<f[1];i++){
                 factories.add(f[0]);
             }
         }
         Collections.sort(factories);
-        long[][] dp = new long[robot.size()][factories.size()];
-        for(long[] row: dp){
-            Arrays.fill(row,-1);
+        long[][] dp = new long[robots.size()+1][factories.size()+1];
+        for(int i=0;i<robots.size();i++){
+            dp[i][factories.size()] = (long) 1e12;
         }
-        return helper(robot,factories,0,0,dp);
+        for(int i=robots.size()-1;i>=0;i--){
+            for(int j=factories.size()-1;j>=0;j--){
+                int robot = robots.get(i);
+        int factory = factories.get(j);
+        
+
+        long min1 = dp[i+1][j+1] + Math.abs(robot-factory);
+        
+        long min2 = dp[i][j+1];
+        
+        dp[i][j]=Math.min(min1,min2);
+            }
+        }
+        return dp[0][0];
     }
      
     
