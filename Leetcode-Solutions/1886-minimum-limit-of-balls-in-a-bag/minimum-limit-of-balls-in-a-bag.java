@@ -18,7 +18,7 @@ class Solution {
         }
        }
 
-       return left;
+       return right;
     }
     boolean isPossible(int maxBalls,int[] nums,int maxOpr){
         int opr=0;
