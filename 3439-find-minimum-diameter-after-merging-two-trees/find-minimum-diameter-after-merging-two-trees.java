@@ -7,7 +7,6 @@ class Solution {
      int diameter2=d2[0]==2?d2[1]*2+1:d2[1]*2;
      int radius1=d1[0]==2?d1[1]+1:d1[1];
      int radius2=d2[0]==2?d2[1]+1:d2[1];
-     System.out.println(diameter1+" "+diameter2);
      return Math.abs(diameter1-diameter2)>2?Math.max(diameter1,diameter2):radius1+radius2+1;
     }
 
