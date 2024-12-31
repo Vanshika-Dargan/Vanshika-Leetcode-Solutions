@@ -1,35 +1,46 @@
 class Solution {
-
     public int mincostTickets(int[] days, int[] costs) {
-
-        int dp[] = new int[days.length + 1];
-        Arrays.fill(dp, -1);
-        return helper(days, costs, 0, dp);
-    }
-
-    int helper(int[] days, int[] costs, int i, int[] dp) {
-
-        if (i == days.length)
-            return 0;
-        if (dp[i] != -1)
-            return dp[i];
-        int next = i;
-        next = nextIndex(days, i, 0);
-        int cost_1 = costs[0] + helper(days, costs, next, dp);
-        next = nextIndex(days, i, 6);
-        int cost_7 = costs[1] + helper(days, costs, next, dp);
-        next = nextIndex(days, i, 29);
-        int cost_30= costs[2] + helper(days, costs, next, dp);
-        dp[i] = Math.min(cost_1, Math.min(cost_7, cost_30));
-        return dp[i];
-    }
-
-    int nextIndex(int days[], int i, int day) {
-
-        int j = i;
-        while (j < days.length && days[j] <= (days[i] + day)) {
-            j++;
+        // Initialize dp array to store the minimum cost for each state
+        int[][] dp = new int[days.length][366];
+        for (int i = 0; i < days.length; i++) {
+            Arrays.fill(dp[i], Integer.MAX_VALUE);
         }
-        return j;
+
+        // Call the recursive function and return the result
+        return calculateMinCost(days, costs, 0, 0, dp);
+    }
+
+    private int calculateMinCost(int[] days, int[] costs, int index, int maxDate, int[][] dp) {
+        // Base case: if we've processed all days, return 0 cost
+        if (index == days.length) {
+            return 0;
+        }
+
+        // If already computed, return the stored value
+        if (dp[index][maxDate] != Integer.MAX_VALUE) {
+            return dp[index][maxDate];
+        }
+
+        int currentDay = days[index];
+        int ans = Integer.MAX_VALUE;
+
+        // Case 1: Skip buying a new ticket if the current day is covered
+        if (maxDate >= currentDay) {
+            ans = calculateMinCost(days, costs, index + 1, maxDate, dp);
+        }
+
+        // Case 2: Buy a 1-day ticket
+        ans = Math.min(ans, costs[0] + calculateMinCost(days, costs, index + 1, currentDay, dp));
+
+        // Case 3: Buy a 7-day ticket
+        ans = Math.min(ans, costs[1] + calculateMinCost(days, costs, index + 1, Math.min(365, currentDay + 6), dp));
+
+        // Case 4: Buy a 30-day ticket
+        ans = Math.min(ans, costs[2] + calculateMinCost(days, costs, index + 1, Math.min(365, currentDay + 29), dp));
+
+        // Store the result in dp array
+        dp[index][maxDate] = ans;
+
+        return ans;
     }
 }
