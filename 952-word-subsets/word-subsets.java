@@ -13,7 +13,7 @@ class Solution {
                 maxFreq[i] = Math.max(maxFreq[i], freq[i]);
             }
         }
-        System.out.println(Arrays.toString(maxFreq));
+       
         
         for (String word : words1) {
             int[] freq = new int[26];
