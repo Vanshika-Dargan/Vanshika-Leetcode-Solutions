@@ -1,27 +1,24 @@
 class Solution {
+    static int dir[][] = { { 0, 1 }, { 1, 0 }, { -1, 0 }, { 0, -1 } };
     public boolean isValid(int i, int j, int m, int n){
         if(i<0 || j<0 || i>=m || j>=n) return false;
         return true;
     }
+    public int[][] dfs(int[][] image, int i, int j, int m, int n,int color,int originalColor) {
+        image[i][j]=color;
+                for(int d[]:dir){
+                    int new_i=d[0]+i;
+                    int new_j = d[1]+j;
+                    if(isValid(new_i,new_j,m,n) && image[new_i][new_j]==originalColor && image[new_i][new_j]!=color){
+                        dfs(image,new_i,new_j,m,n,color,originalColor);
+                    }
+                }
+                return image;
+            }
+
     public int[][] floodFill(int[][] image, int sr, int sc, int color) {
         int m = image.length;
         int n = image[0].length;
-        LinkedList<int[]> q = new LinkedList<>();
-        q.offer(new int[]{sr,sc});
-        int dir[][] = {{0,1},{1,0},{0,-1},{-1,0}};
-        int originalColor = image[sr][sc];
-         image[sr][sc]=color;
-        while(!q.isEmpty()){
-            int node[]=q.poll();
-            for(int d[]:dir){
-                int new_i=d[0]+node[0];
-                int new_j = d[1]+node[1];
-                if(isValid(new_i,new_j,m,n) && image[new_i][new_j]==originalColor && image[new_i][new_j]!=color){
-                    image[new_i][new_j]=color;
-                    q.offer(new int[]{new_i,new_j});
-                }
-            }
-        }
-    return image;
+        return dfs(image,sr,sc,m,n,color,image[sr][sc]);
     }
 }
