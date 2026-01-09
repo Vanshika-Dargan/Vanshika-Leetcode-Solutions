@@ -1,38 +1,37 @@
 class Solution {
     public List<Integer> eventualSafeNodes(int[][] graph) {
-        
-        int n = graph.length;
-        int outdegree[] = new int[n];
-        Queue<Integer> q = new LinkedList<>();
-         List<Integer> ans = new ArrayList<>();
-         Map<Integer,List<Integer>> map = new HashMap<>();
-         for(int i=0;i<n;i++){
-            map.put(i,new ArrayList<>());
-         }
-        for(int i=0;i<n;i++){
-                outdegree[i]+=graph[i].length;
-                if(outdegree[i]==0){
-                    q.offer(i);
-                    ans.add(0,i);
-                }
-                for(int j=0;j<graph[i].length;j++){
-                   List<Integer> neigh = map.get(graph[i][j]);
-                   neigh.add(i);
-                   map.put(graph[i][j],neigh);
-                }
-        }
-       
-        while(!q.isEmpty()){
-        int curr = q.poll();
-        for(int nei:map.get(curr)){
-            outdegree[nei]-=1;
-            if(outdegree[nei]==0){
-                q.offer(nei);
-                ans.add(nei);
+        int V = graph.length;
+        boolean v[]=new boolean[V];
+        boolean p[]=new boolean[V];
+        int check[] = new int[V];
+        for(int i=0;i<V;i++){
+            if(!v[i]){
+                dfs(i,v,p,graph,check);
             }
         }
+        List<Integer> safeNode = new ArrayList<>();
+        for(int i=0;i<V;i++){
+            if(check[i]==1) safeNode.add(i);
         }
-        Collections.sort(ans);
-        return ans;
+        return safeNode;
+    }
+    public boolean dfs(int node, boolean[] v, boolean[] p, int[][] graph, int[] check){
+        v[node]=true;
+        p[node]=true;
+        for(int n: graph[node]){
+            if(!v[n]){
+                if(dfs(n,v,p,graph,check)) {
+                    check[node]=0;
+                    return true;
+                }
+            }
+            else if(p[n]) {
+                check[node]=0;
+                return true;
+            }
+        }
+        check[node]=1;
+        p[node]=false;
+        return false;
     }
 }
