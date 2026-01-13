@@ -1,37 +1,37 @@
 class Solution {
     public List<Integer> eventualSafeNodes(int[][] graph) {
+
+        List<List<Integer>> adjRev = new ArrayList<>();
         int V = graph.length;
-        boolean v[]=new boolean[V];
-        boolean p[]=new boolean[V];
-        int check[] = new int[V];
-        for(int i=0;i<V;i++){
-            if(!v[i]){
-                dfs(i,v,p,graph,check);
+        int in[] = new int[V];
+        LinkedList<Integer> q = new LinkedList<>();
+        for (int i = 0; i < V; i++) {
+            adjRev.add(new ArrayList<>());
+        }
+        for (int i = 0; i < V; i++) {
+            for (int j = 0; j < graph[i].length; j++) {
+                adjRev.get(graph[i][j]).add(i);
+                in[i]++;
             }
         }
-        List<Integer> safeNode = new ArrayList<>();
-        for(int i=0;i<V;i++){
-            if(check[i]==1) safeNode.add(i);
-        }
-        return safeNode;
-    }
-    public boolean dfs(int node, boolean[] v, boolean[] p, int[][] graph, int[] check){
-        v[node]=true;
-        p[node]=true;
-        for(int n: graph[node]){
-            if(!v[n]){
-                if(dfs(n,v,p,graph,check)) {
-                    check[node]=0;
-                    return true;
-                }
-            }
-            else if(p[n]) {
-                check[node]=0;
-                return true;
+        for (int i = 0; i < V; i++) {
+            if (in[i] == 0) {
+                q.offer(i);
             }
         }
-        check[node]=1;
-        p[node]=false;
-        return false;
+
+        List<Integer> res = new ArrayList<>();
+        while (!q.isEmpty()) {
+            int node = q.poll();
+            res.add(node);
+            for (int n : adjRev.get(node)) {
+                in[n]--;
+                if (in[n] == 0)
+                    q.offer(n);
+            }
+        }
+        Collections.sort(res);
+        return res;
+
     }
 }
