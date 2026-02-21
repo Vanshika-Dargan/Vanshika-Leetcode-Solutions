@@ -5,16 +5,16 @@ class Solution {
     }
 
     boolean fn(int[] stones, int i, int k,Map<String, Boolean> dp) {
-        if (i == stones[stones.length - 1])
+        if (i == stones.length - 1)
             return true;
             String key = i + "," + k;
             if(dp.containsKey(key)) return dp.get(key);
         for(int jump=k-1;jump<=k+1;jump++){
             if(jump<=0) continue;
             if(i==0 && jump>1) continue;
-            int index = bs(stones,i+jump);
+            int index = bs(stones,stones[i]+jump);
             if(index!=-1)
-            if(fn(stones,i+jump,jump,dp)) {
+            if(fn(stones,index,jump,dp)) {
             dp.put(key,true);
             return true;
             }
