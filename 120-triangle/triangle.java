@@ -1,26 +1,18 @@
 class Solution {
     public int minimumTotal(List<List<Integer>> t) {
-        List<List<Integer>> dp = new ArrayList<>();
-        for (List<Integer> row : t) {
-            dp.add(new ArrayList<>(row));
+        List<Integer> dp = new ArrayList<>();
+        for(int i:t.get(t.size()-1)){
+            dp.add(i);
         }
         for (int i = t.size()-2; i >=0;i--) {
-            List<Integer> list = t.get(i);
-            for (int j = 0; j < list.size(); j++) {
-                List<Integer> curr_dp = dp.get(i);
-                int curr = list.get(j);
-                int left = Integer.MAX_VALUE;
-                int right = Integer.MAX_VALUE;
-                left = dp.get(i + 1).get(j);
-                right = dp.get(i + 1).get(j + 1);
-                int min = Math.min(left, right);
-                int ans = curr;
-                if (min != Integer.MAX_VALUE)
-                    curr += min;
-               curr_dp.set(j, curr);
+            for (int j = 0; j < t.get(i).size(); j++) {
+                int curr = t.get(i).get(j);
+                int min = Math.min(dp.get(j), dp.get(j + 1));
+                curr += min;
+               dp.set(j, curr);
             }
         }
-        return dp.get(0).get(0);
+        return dp.get(0);
     }
 
     int fn(List<List<Integer>> t, int i, int j, List<List<Integer>> dp) {
