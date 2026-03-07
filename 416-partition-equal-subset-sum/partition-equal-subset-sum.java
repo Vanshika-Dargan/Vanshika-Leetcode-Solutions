@@ -8,24 +8,26 @@ class Solution {
         if (sum % 2 != 0)
             return false;
         int target = sum / 2;
-        boolean dp[][] = new boolean[n][target + 1];
-        for (int i = 0; i < n; i++) {
-            dp[i][0] = true;
-        }
+        boolean prev[] = new boolean[target + 1];
+
+        prev[0] = true;
         if (nums[0] <= target)
-            dp[0][nums[0]] = true;
+            prev[nums[0]] = true;
 
         for (int i = 1; i < n; i++) {
+            boolean curr[] = new boolean[target + 1];
+            curr[0] = true;
             for (int j = 1; j <= target; j++) {
                 boolean take = false;
-                boolean not_take = dp[i - 1][j];
+                boolean not_take = prev[j];
                 if (j - nums[i] >= 0)
-                    take = dp[i - 1][j - nums[i]];
+                    take = prev[j - nums[i]];
 
-                dp[i][j] = take || not_take;
+                curr[j] = take || not_take;
             }
+            prev = curr;
         }
-        return dp[n - 1][target];
+        return prev[target];
     }
 
     int fn(int[] nums, int i, int target, int dp[][]) {
