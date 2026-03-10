@@ -1,15 +1,37 @@
 class Solution {
-    public int findTargetSumWays(int[] nums, int target) {
+    public int findTargetSumWays(int[] nums, int T) {
         int n = nums.length;
         int sum = 0;
         for (int i = 0; i < n; i++) {
             sum += nums[i];
         }
         int dp[][] = new int[n][2*sum+1];
-        for (int row[] : dp) {
-            Arrays.fill(row, -1);
+        if (Math.abs(T) > sum) return 0;
+        if (nums[0] == 0) {
+            dp[0][sum] = 2;
+        } else {
+            dp[0][sum + nums[0]] = 1;
+            dp[0][sum - nums[0]] = 1;
         }
-        return fn(nums, target, n - 1, dp,sum);
+
+
+        for(int i=1;i<n;i++){
+           for(int target=-sum;target<=sum;target++){
+            int idx = target + sum;
+                int ways = 0;
+        int plus = target - nums[i];
+                int minus = target + nums[i];
+
+                if (plus >= -sum && plus <= sum)
+                    ways += dp[i - 1][plus + sum];
+
+                if (minus >= -sum && minus <= sum)
+                    ways += dp[i - 1][minus + sum];
+
+                dp[i][idx] = ways;
+            }
+        }
+        return dp[n - 1][T+sum];
     }
 
     int fn(int[] nums, int target, int i, int dp[][],int offset) {
