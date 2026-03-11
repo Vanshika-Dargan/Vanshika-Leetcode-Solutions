@@ -1,26 +1,28 @@
 class Solution {
     public int change(int A, int[] coins) {
         int n = coins.length;
-        int dp[][] = new int[n][A + 1];
+        int prev[] = new int[A + 1];
         
         for(int amount=0;amount<=A;amount++){
         if (amount % coins[0] == 0) {
-            dp[0][amount] = 1;
+            prev[amount] = 1;
         } else
-            dp[0][amount] = 0;
+            prev[amount] = 0;
         }
 
         for (int i = 1; i < n; i++) {
+              int curr[] = new int[A + 1];
             for (int amount = 0; amount <= A; amount++) {
                 int pick = 0;
-                int not_pick = dp[i - 1][amount];
+                int not_pick = prev[amount];
                 if (amount >= coins[i])
-                    pick = dp[i][amount - coins[i]];
-                dp[i][amount] = pick + not_pick;
+                    pick = curr[amount - coins[i]];
+                curr[amount] = pick + not_pick;
             }
+            prev = curr;
         }
 
-        return dp[n - 1][A];
+        return prev[A];
     }
 
     int fn(int[] coins, int i, int amount, int dp[][]) {
