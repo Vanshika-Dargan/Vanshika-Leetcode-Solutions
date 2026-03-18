@@ -2,27 +2,27 @@ class Solution {
     public int numDistinct(String s, String t) {
         int n = s.length();
         int m = t.length();
-        int dp[][] = new int[n + 1][m + 1];
+        int prev[] = new int[m + 1];
 
-        for (int i = 0; i <= n; i++) {
-            dp[i][0] = 1;
-        }
+            prev[0] = 1;
 
         for (int i = 1; i <= n; i++) {
+              int curr[] = new int[m + 1];
+              curr[0] = 1;
             for (int j = 1; j <= m; j++) {
                 char c1 = s.charAt(i - 1);
                 char c2 = t.charAt(j - 1);
-                int not_take = dp[i - 1][j];
+                int not_take = prev[j];
                 int take = 0;
                 if (c1 == c2) {
-                    take = dp[i - 1][j - 1];
+                    take = prev[j - 1];
                 }
-                dp[i][j] = take + not_take;
+                curr[j] = take + not_take;
             }
+           prev = curr;
         }
 
-        return dp[n][m];
-
+        return prev[m];
     }
 
     int fn(String s, String t, int i, int j, int[][] dp) {
