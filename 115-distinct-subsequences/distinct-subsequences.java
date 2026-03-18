@@ -7,9 +7,7 @@ class Solution {
             prev[0] = 1;
 
         for (int i = 1; i <= n; i++) {
-              int curr[] = new int[m + 1];
-              curr[0] = 1;
-            for (int j = 1; j <= m; j++) {
+            for (int j = m; j >= 1; j--) {
                 char c1 = s.charAt(i - 1);
                 char c2 = t.charAt(j - 1);
                 int not_take = prev[j];
@@ -17,9 +15,8 @@ class Solution {
                 if (c1 == c2) {
                     take = prev[j - 1];
                 }
-                curr[j] = take + not_take;
+                prev[j] = take + not_take;
             }
-           prev = curr;
         }
 
         return prev[m];
