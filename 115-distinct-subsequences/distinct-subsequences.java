@@ -12,10 +12,10 @@ class Solution {
             for (int j = 1; j <= m; j++) {
                 char c1 = s.charAt(i - 1);
                 char c2 = t.charAt(j - 1);
-                int not_take = fn(s, t, i - 1, j, dp);
+                int not_take = dp[i - 1][j];
                 int take = 0;
                 if (c1 == c2) {
-                    take = fn(s, t, i - 1, j - 1, dp);
+                    take = dp[i - 1][j - 1];
                 }
                 dp[i][j] = take + not_take;
             }
