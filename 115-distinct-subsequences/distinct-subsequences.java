@@ -2,11 +2,26 @@ class Solution {
     public int numDistinct(String s, String t) {
         int n = s.length();
         int m = t.length();
-        int dp[][] = new int[n][m];
-        for (int i = 0; i < n; i++) {
-            Arrays.fill(dp[i], -1);
+        int dp[][] = new int[n + 1][m + 1];
+
+        for (int i = 0; i <= n; i++) {
+            dp[i][0] = 1;
         }
-        return fn(s, t, n - 1, m - 1, dp);
+
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) {
+                char c1 = s.charAt(i - 1);
+                char c2 = t.charAt(j - 1);
+                int not_take = fn(s, t, i - 1, j, dp);
+                int take = 0;
+                if (c1 == c2) {
+                    take = fn(s, t, i - 1, j - 1, dp);
+                }
+                dp[i][j] = take + not_take;
+            }
+        }
+
+        return dp[n][m];
 
     }
 
