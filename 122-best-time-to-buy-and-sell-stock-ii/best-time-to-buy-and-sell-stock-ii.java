@@ -1,11 +1,11 @@
 class Solution {
     public int maxProfit(int[] prices) {
         int n = prices.length;
-        int dp[][]=new int[n][3];
+        int dp[][]=new int[n][2];
         for(int row[]:dp){
             Arrays.fill(row,-1);
         }
-        return fn(prices,0,0,dp);
+        return fn(prices,0,1,dp);
     }
 
     int fn(int[] prices,int i, int buy,int dp[][]){
@@ -18,11 +18,11 @@ class Solution {
         int b =0;
         int c = 0;
         a =  fn(prices,i+1,buy,dp);
-        if(buy==0 || buy==2){
-             b=fn(prices,i+1,1,dp)-prices[i];
+        if(buy==1){
+             b=fn(prices,i+1,0,dp)-prices[i];
         }
-        else if(buy==1){
-            c= fn(prices,i+1,2,dp)+prices[i];
+        else if(buy==0){
+            c= fn(prices,i+1,1,dp)+prices[i];
         }
         dp[i][buy]= Math.max(a,Math.max(b,c));
         return dp[i][buy];
