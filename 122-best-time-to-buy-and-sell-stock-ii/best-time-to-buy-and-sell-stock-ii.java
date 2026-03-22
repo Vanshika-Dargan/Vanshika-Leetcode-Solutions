@@ -1,29 +1,40 @@
 class Solution {
     public int maxProfit(int[] prices) {
         int n = prices.length;
-        int dp[][]=new int[n][2];
-        for(int row[]:dp){
-            Arrays.fill(row,-1);
+        int dp[][] = new int[n+1][2];
+
+        for (int i = n-1; i >=0; i--) {
+            for (int buy = 0; buy <= 1; buy++) {
+                int a = 0;
+                int b = 0;
+                a = dp[i + 1][buy];
+                if (buy == 1) {
+                    b = dp[i + 1][0] - prices[i];
+                } else if (buy == 0) {
+                    b = dp[i + 1][1] + prices[i];
+                }
+                dp[i][buy] = Math.max(b, a);
+            }
         }
-        return fn(prices,0,1,dp);
+        return dp[0][1];
     }
 
-    int fn(int[] prices,int i, int buy,int dp[][]){
+    int fn(int[] prices, int i, int buy, int dp[][]) {
 
-        if(i==prices.length){
+        if (i == prices.length) {
             return 0;
         }
-        if(dp[i][buy]!=-1) return dp[i][buy];
-        int a =0;
-        int b =0;
-        a =  fn(prices,i+1,buy,dp);
-        if(buy==1){
-             b=fn(prices,i+1,0,dp)-prices[i];
+        if (dp[i][buy] != -1)
+            return dp[i][buy];
+        int a = 0;
+        int b = 0;
+        a = fn(prices, i + 1, buy, dp);
+        if (buy == 1) {
+            b = fn(prices, i + 1, 0, dp) - prices[i];
+        } else if (buy == 0) {
+            b = fn(prices, i + 1, 1, dp) + prices[i];
         }
-        else if(buy==0){
-            b= fn(prices,i+1,1,dp)+prices[i];
-        }
-        dp[i][buy]= Math.max(b,a);
+        dp[i][buy] = Math.max(b, a);
         return dp[i][buy];
     }
 }
